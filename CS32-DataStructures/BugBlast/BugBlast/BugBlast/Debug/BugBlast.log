@@ -1,0 +1,23 @@
+﻿Build started 10/20/2014 9:16:22 PM.
+     1>Project "C:\Users\tgald_000\Desktop\UCLA\W14\CS32\p3 final\BugBlast-skeleton-windows (1)\BugBlast\BugBlast\BugBlast.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /IirrKlang /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _CRT_SECURE_NO_WARNINGS /D GLUT_BUILDING_LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Actor.cpp GameController.cpp GameWorld.cpp main.cpp StudentWorld.cpp
+         StudentWorld.cpp
+         main.cpp
+         GameWorld.cpp
+         GameController.cpp
+         Actor.cpp
+         Generating Code...
+     1>c:\users\tgald_000\desktop\ucla\w14\cs32\p3 final\bugblast-skeleton-windows (1)\bugblast\bugblast\actor.cpp(50): warning C4715: 'Brick::takeTurn' : not all control paths return a value
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\tgald_000\Desktop\UCLA\W14\CS32\p3 final\BugBlast-skeleton-windows (1)\BugBlast\Debug\BugBlast.exe" /INCREMENTAL /NOLOGO ..\glut32.lib dsound.lib winmm.lib opengl32.lib glu32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\tgald_000\Desktop\UCLA\W14\CS32\p3 final\BugBlast-skeleton-windows (1)\BugBlast\Debug\BugBlast.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\tgald_000\Desktop\UCLA\W14\CS32\p3 final\BugBlast-skeleton-windows (1)\BugBlast\Debug\BugBlast.lib" /MACHINE:X86 Debug\Actor.obj
+         Debug\GameController.obj
+         Debug\GameWorld.obj
+         Debug\main.obj
+         Debug\StudentWorld.obj
+         BugBlast.vcxproj -> C:\Users\tgald_000\Desktop\UCLA\W14\CS32\p3 final\BugBlast-skeleton-windows (1)\BugBlast\Debug\BugBlast.exe
+     1>Done Building Project "C:\Users\tgald_000\Desktop\UCLA\W14\CS32\p3 final\BugBlast-skeleton-windows (1)\BugBlast\BugBlast\BugBlast.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:18.98

@@ -1,0 +1,97 @@
+from sys import argv
+import pymysql
+debug = False
+#must be in the same directory as negative-words.txt and positive-words.txt
+
+#grab table of all tweets that have null sentiment scores
+#SELECT * FROM TWEETS WHERE SCORE = NULL
+db = pymysql.connect(host="localhost", user="root", passwd="", db="ticktalk")
+cur = db.cursor()
+#we don't need this line now that we've created the table
+#createTable = "CREATE TABLE unscoredtweets (id INTEGER NOT NULL, text varchar(140), score INTEGER, PRIMARY KEY (id))"
+#cur.execute(createTable)
+#createTable = "CREATE TABLE scoredtweets (id INTEGER NOT NULL, text varchar(140), score INTEGER NOT NULL, PRIMARY KEY (id))"
+#cur.execute(createTable)
+def readFromFileIntoDictionary(filename, value, dictionary):
+    with open(filename) as fileOfWords:
+        for line in fileOfWords:
+	    dictionary[line[:-1]] = value
+#add 10 fake tweets to the database table that 			
+def addFakeTweets(cursor, tableName):
+    cursor.execute("insert into " + tableName + " VALUES (1, \"this is the second tweet we are inserting\", NULL)")
+    cursor.execute("insert into " + tableName + " VALUES (2, \"here is another good tweet. I'm very glad this works\", NULL)")
+    cursor.execute("insert into " + tableName + " VALUES (3, \"this one is much worse than the sencond. much much worse\", NULL)")
+    cursor.execute("insert into " + tableName + " VALUES (4, \"tesla announced that two senior executives are departing\", NULL)")
+    cursor.execute("insert into " + tableName + " VALUES (5, \"im excited for the new product launch of the microphone 12\", NULL)")
+    cursor.execute("insert into " + tableName + " VALUES (6, \"this$ has*( some wierd%$ characters\n and a new line\", NULL)")
+    cursor.execute("insert into " + tableName + " VALUES (7, \"almost done. hooray!\", NULL)")
+    cursor.execute("insert into " + tableName + " VALUES (8, \"Now we are finished with developing the greatest dildo the world has ever seen.\", NULL)")
+
+#this prints that table named tableName in the database cursor points to
+def printTable(cursor, tableName):
+   cursor.execute("SELECT * FROM " + tableName)
+   print(cursor.fetchall())
+
+#parse the text of the tweet and return an array of individual words
+def parseText(text):
+    listOfWords = []
+    startOfWord = 0
+    newWord = False
+    for endOfWord in range(len(text)):
+        if endOfWord == len(text) - 1 and text[-1:].isalpha():
+            listOfWords.append(text[startOfWord:endOfWord+1])
+        elif endOfWord == len(text) - 1:
+            listOfWords.append(text[startOfWord:endOfWord])
+        if text[startOfWord:endOfWord].isalpha() or startOfWord == endOfWord:
+            continue
+        else:
+            listOfWords.append(text[startOfWord:endOfWord-1])
+            startOfWord = endOfWord
+    return listOfWords
+
+#this assigns a sentiment score to each tweet
+#takes the dictionary, tweet, and array of words for the tweet as input
+#returns a new tweet in list form with score not null
+def assignSentimentScore(dictionary, tweet, words):
+    moduleDebug =0 
+    score = 0
+    for word in words:
+        if moduleDebug:
+            scoreOfWord = dictionary.get(word, 0)
+            print("The score of " + word + " is: " + str(scoreOfWord))
+            score += scoreOfWord
+        else:
+            score += dictionary.get(word, 0)
+    newTweet = []
+    newTweet.append(tweet[0])
+    newTweet.append(tweet[1])
+    newTweet.append(score)
+    return newTweet
+
+def createDictionary(dictionary):
+    #read in each file line by line, and give a value of 1/-1 depending on if they come from positive or negative
+    readFromFileIntoDictionary("negative-words.txt", -1, sentimentScoresDict)
+    readFromFileIntoDictionary("positive-words.txt", 1, sentimentScoresDict)
+#make an empty string neutral in the dictionary
+    sentimentScoresDict[""] = 0
+
+#create dictionary from positive and negative words
+sentimentScoresDict = {'acquire': 1}
+createDictionary(sentimentScoresDict)
+
+addFakeTweets(cur, "unscoredtweets")
+
+#grab all tweets and assign a sentiment score to them
+#tweets come from inputTableName, and go to outputTableName
+def moveTweetsToNewDatabase(inputTableName,cursor, outputTableName):
+    cur.execute("select * from " + inputTableName)
+    unscoredtweets = cur.fetchall()
+    for row in unscoredtweets:
+        newTweet = assignSentimentScore(sentimentScoresDict, row, parseText(row[1])) 
+#write this tweet to the outputTable
+        cursor.execute("insert into " + outputTableName + " VALUES (" + str(newTweet[0]) + ",\"" + newTweet[1] + "\"," + str(newTweet[2]) + ")")
+
+
+moveTweetsToNewDatabase("unscoredtweets",cur, "scoredtweets")
+cur.execute("select * from scoredtweets")
+print(cur.fetchall())

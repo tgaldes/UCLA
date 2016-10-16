@@ -1,0 +1,67 @@
+I solved the convert_grammar function following the advice of 
+one of the TAs in discussion section. The solution uses function
+currying to add to the result returned by each function when
+the input symbol matches the particular x value in the function.
+Before going to section I really had no idea how to even begin
+this function, I had never used function currying and had only
+started coding in OCAML at the beginning of the quarter. I'm
+still not exactly sure how the syntax works in OCAML but I get
+the concept of the solution: whenever the input left hand side
+matches the first tuple element you add it to the list stored
+in the right hand side of that tuple that represents the list
+of rules for the nonterminal symbol.
+
+For problem two my first attempt at solving was one large and
+unweildy recursive function that was called by parse_prefix.
+This implementation failed for a couple of reasons. I wasn't 
+able to figure out how to differentiate between picking out a 
+rule from the list of rules associated with a given non
+terminal symbol and actually applying that rule to the suffix,
+and I couldn't figure out to throw away rules that had failed
+when my recursion returned None to a higher level. After some
+hair pulling and cursing I talked to my friend who had taken
+131 last year and he suggested two recursive functions
+
+This next attempt to solve the problem was much more fruitful.
+It took me a while to figure out that the function declaration
+syntax in OCAML is different for mutually recursive functions
+and that they mush be declared together. From the beginning I split the two functions up according to 
+matching the terminals in a single rule and function that took
+nonterminal symbols and called the terminal symbol function
+after picking one rule to try. After not too long I could solve
+problems on a very simple grammar that had two rules I wrote.
+At this point my solution worked when the correct rule was
+first in the list, but gave the wrong derivation any time that
+it needed to throw away a rule and try a different one. I put
+in a bunch of print statements to see what was happening, and
+they showed that I was accepting derivations that left extra
+parts in rules it used. I was able to isolate the problem to
+the call of the match nonterminal from match_terminal; when it returned it never checked the rest of the rule, leaving the 
+program thinking it had matched all of the suffix perfectly
+when there was more rule to be used. It took me forever to 
+figure out the correct way to call match_nonterminal, which was
+to change the acceptor in the call from "acceptor" to 
+"(match_terminal rules t acceptor)". That way when the call to 
+match_nonterminal returned and was checked by the acceptor,
+it would actually be calling match_terminal with the rest of
+the rule. With this change, the original acceptor function only
+gets called after you match a terminal symbol and run out of
+symbols in the rule in the next call to match_terminal. After
+making this change I had to change the order of my parameters
+so that it would compile, and at this point I made the silly
+mistake of changing the order of prev and suf in my two
+acceptor functions instead of match_terminal and nonterminal,
+which later forced me to change their order everywhere when I
+was testing with hw2sample.
+
+The only weakness I can think of, which is a major one, is that
+my code can get stuck in an infinite loop depending on the 
+structure of the grammar. Non blind alley grammars i.e. 
+grammars with no obvious mistakes can cause this error. For 
+example, if the first rule in the awkish_grammar wasn't
+Expr -> Term; Binop; Expr
+and instead was 
+Expr -> Expr; Binop; Term
+the program would expand the first rule forever, never actually
+comparing symbols, just making more and more recursive calls.
+

@@ -1,0 +1,38 @@
+This is project 1 for CS 111 at UCLA, Operating Systems Principles.
+Me and one other student wrote this project during Spring of 2015.
+
+The goal of the lab was to build a command parser for a limited subset of shell syntax. The parser executes the commands according to the POSIX order of operations, using parrellism whenever possible to decrease the time needed to run the script of commands.
+The lab was completed in three parts. Lab 1A had us parse the commands, sort them according to the order of operations, and store the commands in a tree structure that would be later be used for execution. We created a new tree when the commands in the script were separated by two or more new lines. The -p option runs a program that prints the tree instead of executing the commands.
+Lab 1B had us use system calls and forking to execute the commands with no parrellism.
+Lab 1C had us create data structures to check for dependencies bewtween different commands in the script and execute independent command trees in parrellel. This is invoked with the -p option. We checked for WAR, WAW, and RAW dependencies in the files that the script wrote to and read from.
+
+For a demonstration:
+make clean
+make
+./demo.sh
+
+
+
+Below are the original notes we made in the README files for the TAs
+
+Lab 1A
+
+We implemented this part of the lab by dividing the task into two main parts: parsing the input script and then sorting the commands. Basically, the code first parses each piece of the input scripts into small nodes called elementNodes. The parser creates a linked list of these element nodes with the first command being the head. When we encounter a new command tree, we create an entirely new linked list. We use operator and operand stacks to then sort the linked list command trees into an executable command tree structure.  
+
+Lab 1B
+
+I was having a lot of trouble implementing the input and output with the method that the TAs gave me in class.
+The code I was given in class was:
+	int in;
+	in = fopen(c->input, "r");
+	dup2(in, 0);
+	close(in);
+
+I tried this and several variations, to no avail. I then went on github and saw that a previous student had
+set up his input with the code:
+
+freopen(c->input, "r", stdin);
+
+After trying this implementation, I got the right output/input, so I used this code.
+
+My partner, Austin Nasso, had a family emergency and had to fly home to Connecticut for several days the weekend before this part of the lab was due, which is why it is several days late.

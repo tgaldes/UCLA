@@ -1,0 +1,19 @@
+This was the third project for Operating Systems Principles. The goal of this project was to fill in skeleton code for a working file system.
+
+The project was written on an Ubuntu VM that was distributed to the class. The VM was configured to run QEMU.
+
+To test the file system on a QEMU capable system, use the following commands
+
+./run-qemu
+
+press enter
+
+cd test
+
+The file system that runs the code my partner and I wrote is mounted when you switch into the test directory. Inside the test directory you can use a variety of commands to modify the files and observe the behavior of the file system. Alternatively, run
+
+./lab3-tester.pl
+
+to see the test script distributed by the TAs run.
+
+The file system works with the exception of some writes to files.

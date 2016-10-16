@@ -1,0 +1,31 @@
+# Fill in your name, student ID, and email address in this file.
+# If you are working in a team, fill out the information for both team 
+# members.
+
+# SUBMIT THE LAB ONLY ONCE (from only one partner). This file will be
+# automatically parsed in order to give both team members credit for the
+# lab.
+
+# If you did one or more extra credit problems, indicate which one in the
+# appropriate section below (remove the # sign first). If you have any other
+# information you'd like us to know, please add it at the end of the file.
+
+# Partner 1
+Name: Tyler Galdes
+Student ID: 204275320
+Email: tgaldes@gmail.com
+
+# Partner 2 (if you're working in a team)
+Name: Austin Nasso
+Student ID: 204339807
+Email: austinnasso@ucla.edu
+
+# Extra credit problems
+#Extra credit problem: none
+
+# Add any other information you'd like us to know below this line.
+To do my helper function that zeroed out the newly added blocks of memory,
+I went online to and found documentation for the memset function.
+
+Also, when running the script to test the lab, my code fails on test 16.
+When running 16 by itself, my code passes the test. Taqi said that this was fine.

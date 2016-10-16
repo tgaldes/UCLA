@@ -1,0 +1,187 @@
+
+//homer moves with maggie
+CL-USER 4 : 2 > (NEXT-STATE '(T T T T) 'b)
+(NIL NIL T T)
+
+CL-USER 5 : 2 > (NEXT-STATE '(nil nil T T) 'b)
+25<-----special output that tells me maggie ate poison/dog ate maggie
+
+CL-USER 6 : 2 > (NEXT-STATE '(nil nil T T) 'b)
+(T T T T)
+
+CL-USER 7 : 2 > (NEXT-STATE '(nil nil nil T) 'b)
+(T T NIL T)
+
+CL-USER 8 : 2 > (NEXT-STATE '(nil T nil T) 'b)
+NIL
+
+CL-USER 9 : 2 > (NEXT-STATE '(nil T nil nil) 'b)
+NIL
+
+//homer moves with the dog
+CL-USER 10 : 2 > (NEXT-STATE '(nil T nil nil) 'd)
+NIL
+
+CL-USER 11 : 2 > (NEXT-STATE '(nil T nil nil) 'd)
+NIL
+
+CL-USER 12 : 2 > (NEXT-STATE '(nil T nil nil) 'd)
+(T T T NIL)
+
+CL-USER 13 : 2 > (NEXT-STATE '(nil T nil T) 'd)
+(T T T T)
+
+CL-USER 14 : 2 > (NEXT-STATE '(T T nil T) 'd)
+NIL
+
+CL-USER 15 : 2 > (NEXT-STATE '(T T T T) 'd)
+26
+
+CL-USER 16 : 2 > (NEXT-STATE '(T T T nil) 'd)
+(NIL T NIL NIL)
+
+CL-USER 17 : 2 > (NEXT-STATE '(nil T T nil) 'd)
+NIL
+
+CL-USER 18 : 2 > (NEXT-STATE '(nil T nil nil) 'd)
+(T T T NIL)
+
+CL-USER 19 : 2 > (NEXT-STATE '(nil nil nil nil) 'd)
+26
+
+//homer and poison
+CL-USER 20 : 2 > (NEXT-STATE '(nil nil nil nil) 'p)
+26
+
+CL-USER 21 : 2 > (NEXT-STATE '(nil nil nil T) 'p)
+NIL
+
+CL-USER 22 : 2 > (NEXT-STATE '(T nil nil T) 'p)
+(NIL NIL NIL NIL)
+
+CL-USER 23 : 2 > (NEXT-STATE '(T nil T T) 'p)
+(NIL NIL T NIL)
+
+CL-USER 24 : 2 > (NEXT-STATE '(nil nil T T) 'p)
+NIL
+
+CL-USER 25 : 2 > (NEXT-STATE '(nil nil T nil) 'p)
+(T NIL T T)
+
+CL-USER 26 : 2 > (NEXT-STATE '(nil nil nil nil) 'p)
+26
+
+//homer by himself
+CL-USER 27 : 2 > (NEXT-STATE '(nil nil nil nil) 'h)
+28
+
+CL-USER 28 : 2 > (NEXT-STATE '(nil nil nil T) 'h)
+28
+
+CL-USER 29 : 2 > (NEXT-STATE '(T nil nil T) 'h)
+(NIL NIL NIL T)
+
+CL-USER 30 : 2 > (NEXT-STATE '(T T nil nil) 'h)
+(NIL T NIL NIL)
+
+CL-USER 31 : 2 > (NEXT-STATE '(T T nil T) 'h)
+28
+
+CL-USER 32 : 2 > (NEXT-STATE '(T nil nil T) 'h)
+(NIL NIL NIL T)
+
+CL-USER 33 : 2 > (NEXT-STATE '(nil nil nil T) 'h)
+28
+
+CL-USER 34 : 2 > (NEXT-STATE '(nil nil T T) 'h)
+(T NIL T T)
+
+
+
+//SUCC-FN
+CL-USER 47 : 2 > (SUCC-FN '(nil nil nil nil))
+((T T NIL NIL))
+
+CL-USER 48 : 2 > (SUCC-FN '(nil T nil nil))
+((T T NIL NIL) (T T T NIL) (T T NIL T))
+
+CL-USER 49 : 2 > (SUCC-FN '(T T nil nil))
+((NIL T NIL NIL) (NIL NIL NIL NIL))
+
+CL-USER 50 : 2 > (SUCC-FN '(nil T nil nil))
+((T T NIL NIL) (T T T NIL) (T T NIL T))
+
+CL-USER 51 : 2 > (SUCC-FN '(T T T nil))
+((NIL NIL T NIL) (NIL T NIL NIL))
+
+CL-USER 52 : 2 > (SUCC-FN '(T T nil T))
+((NIL NIL NIL T) (NIL T NIL NIL))
+
+CL-USER 53 : 2 > (SUCC-FN '(nil nil nil T))
+((T T NIL T) (T NIL T T))
+
+CL-USER 54 : 2 > (SUCC-FN '(T nil T T))
+((NIL NIL T T) (NIL NIL NIL T) (NIL NIL T NIL))
+
+CL-USER 55 : 2 > (SUCC-FN '(nil nil T T))
+((T NIL T T) (T T T T))<---got to the goal state!!
+
+
+//ON-PATH
+CL-USER 11 > (ON-PATH '(T T T T) '((T T T nil)(T T T T)))
+T
+
+CL-USER 12 > (ON-PATH '(T T T T) '((T T T nil)(T T T nil)))
+NIL
+
+CL-USER 13 > (ON-PATH '(T T T nil) '((T T T nil)(T T T nil)))
+T
+
+CL-USER 14 > (ON-PATH '(T nil T nil) '((T T T nil)(T T T nil)))
+NIL
+
+CL-USER 15 > (ON-PATH '(T nil T nil) '((T T T nil)(T T T nil)(T nil T nil)))
+T
+
+CL-USER 16 > (ON-PATH '(T nil T nil) '())
+NIL
+
+
+
+CL-USER 18 : 1 > (DFS '(nil nil T T) nil)
+
+CL-USER 19 : 1 > (DFS '(nil nil T T) nil)
+
+CL-USER 20 : 1 > (DFS '(nil nil T T) nil)
+
+CL-USER 21 : 1 > (DFS '(nil nil T T) nil)
+
+CL-USER 22 : 1 > (DFS '(nil nil T T) nil)
+
+CL-USER 23 : 1 > (DFS '(nil nil T T) nil)
+(((NIL NIL T T) (T NIL T T) (NIL NIL NIL T) (T T NIL T) (NIL T NIL NIL)) T T T NIL)
+
+CL-USER 24 : 1 > (DFS '(nil nil nil nil) nil)
+(((NIL NIL NIL NIL) (T T NIL NIL) (NIL T NIL NIL)) T T T NIL)
+
+CL-USER 25 : 1 > (DFS '(T T T nil) nil)
+(NIL T T T NIL)
+
+CL-USER 26 : 1 > 
+
+CL-USER 26 > (DFS '(T T T nil) nil)
+
+CL-USER 27 > (FINAL-STATE '(T T T nil))
+NIL
+
+CL-USER 28 > (DFS '(T T T nil) nil)
+(((T T T NIL) (NIL NIL T NIL) (T NIL T T) (NIL NIL T T)) T T T T)
+
+CL-USER 29 > (DFS '(nil nil nil nil) nil)
+(((NIL NIL NIL NIL) (T T NIL NIL) (NIL T NIL NIL) (T T T NIL) (NIL NIL T NIL) (T NIL T T) (NIL NIL T T)) T T T T)
+
+CL-USER 30 > (DFS '(nil nil nil nil) nil)
+((NIL NIL NIL NIL) (T T NIL NIL) (NIL T NIL NIL) (T T T NIL) (NIL NIL T NIL) (T NIL T T) (NIL NIL T T) (T T T T))
+//it works!!
+CL-USER 31 > 
+

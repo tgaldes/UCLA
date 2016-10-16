@@ -1,0 +1,110 @@
+
+static ssize_t
+ospfs_write(struct file *filp, const char __user *buffer, size_t count, loff_t *f_pos)
+{
+
+	ospfs_inode_t *oi = ospfs_inode(filp->f_dentry->d_inode->i_ino);
+	int retval = 0;
+	size_t amount = 0;
+    int debug = 1;
+    if(debug)
+        eprintk("In ospfs_write\n");
+
+	// Support files opened with the O_APPEND flag.  To detect O_APPEND,
+	// use struct file's f_flags field and the O_APPEND bit.
+	/* EXERCISE: Your code here */
+
+    if(filp->f_flags & O_APPEND)
+    {
+        //increment position to point to the end of the file so we are appending
+        if(debug)
+            eprintk("Appending to file\n");
+        *f_pos = oi->oi_size;
+    }
+
+	// If the user is writing past the end of the file, change the file's
+	// size to accomodate the request.  (Use change_size().)
+/*	 EXERCISE: Your code here*/ 
+    if((*f_pos + count) > oi->oi_size)//= ospfs_size2nblocks(oi->oi_size) * OSPFS_BLKSIZE)
+    {
+        if(debug)
+            eprintk("Changing the size of the file during a write\n");
+        int returnVal = change_size(oi, *f_pos + count);
+        if(returnVal != 0)
+        {
+            if(debug)
+                eprintk("Error changing file size during a write\n");
+            return returnVal;
+        }
+    }
+
+	// Copy data block by block
+	while (amount < count && retval >= 0) {
+        if(debug)
+            eprintk("In while loop\n");
+		uint32_t blockno = ospfs_inode_blockno(oi, *f_pos);
+		uint32_t n;
+		char *data;
+
+		if (blockno == 0) {
+            if(debug)
+                eprintk("Block number returned 0\n");
+			retval = -EIO;
+			goto done;
+		}
+
+        if(debug)
+            eprintk("one\n");
+		data = ospfs_block(blockno);
+
+		// Figure out how much data is left in this block to write.
+		// Copy data from user space. Return -EFAULT if unable to read
+		// read user space.
+		// Keep track of the number of bytes moved in 'n'.
+/*		 EXERCISE: Your code here */
+        int pos = *f_pos;
+        //figure out how many bytes we'll actually read
+        //the smaller of how many we want to read and how many are left in the block
+        n = OSPFS_BLKSIZE - (pos % OSPFS_BLKSIZE);
+        uint32_t bytesLeft = count - amount;
+        if(bytesLeft < n)
+            n = bytesLeft;
+        //get a pointer to the correct position in the block
+        if(debug)
+            eprintk("two\n");
+        data = &(data[(*f_pos) % OSPFS_BLKSIZE]);
+        if(debug)
+            eprintk("2.5\n");
+        int returnVal;
+        if(debug)
+        {
+            eprintk("The value of n is: %i\n", n);
+            eprintk("The value of data is %#010x\n", data);
+            eprintk("The value of buffer is %#010x\n", buffer);
+            eprintk("The value of the block number is %u\n", blockno);
+            uint32_t* new = ospfs_block(blockno);
+
+            eprintk("The block is at the address %#010x\n", new);
+
+        }
+        returnVal = copy_from_user(data, buffer, n);
+        if(returnVal < 0)
+        {
+            if(debug)
+                eprintk("Error in copy_from_user\n");
+            //something went wrong
+            retval = returnVal;
+            goto done;
+        }
+
+
+        if(debug)
+            eprintk("three\n");
+		buffer += n;
+		amount += n;
+		*f_pos += n;
+	}
+
+    done:
+	return (retval >= 0 ? amount : retval);
+}

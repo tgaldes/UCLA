@@ -1,0 +1,14 @@
+1) not satisfiable with three colors
+2) it is satisfiable with four colors
+3) They tell me that we can color the graph with four colors, but not three.
+Coloring of the graph:
+Node: Color
+1: 3
+2: 1
+3: 2
+4: 3
+5: 2
+6: 1
+7: 4
+
+4) You need at least eight colors.

@@ -1,0 +1,20 @@
+This code was written for the first of two projets in CS 124, Computation Genetics.
+
+The purpose of the project was to familiarize us with running automated correlation
+tests between diffent SNPs (single nucleotide polymorphisms) in a set of patients.
+
+In the first part of the project, we had to create a set of 1000 patients, 100 of which
+were our cases, and 900 of which were the controls. There was 1 SNP at a known location
+that appeared in 95% of the cases but only 20% of the controls. Every other SNP appeared
+with probability 50%. Our job was to see if any of the random SNPs were correlated with
+the causal SNP.
+
+The second part of the project was to find a minimum spanning set of SNPs. A minimum spanning
+set takes of advantage of correlated SNPs. Our goal would be to find a subset of the 200 total
+SNPs of the smallest possible size such that every SNP is in the subset, or is correlated to 
+an SNP in the subset.
+In order to get a feel for how relatedness of individuals plays a part in SNP correlation, we
+repeated this process with patients that were 0%, 20%, and 50% related. By adjusting the constants
+on lines 10 and 11, you can change the relatedness of the patients. The default value is 0%, which
+doesn't lead to many correlations and makes the minimum spanning set very large. If you increase
+the constants, you will see the size of the minimum spanning sets begin to decrease.
