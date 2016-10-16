@@ -1,0 +1,9 @@
+#define MAX_PACKET_LENGTH 4
+#define MAX_SEQ_NUM 30720
+#define INIT_CONG_WINDOW 1024
+#define INIT_SLOWSTART_THRESH 30720
+#define DEFAULT_RTO 500 //ms
+#define CLIENT_REC_WINDOW 30720
+#define HEADER_SIZE 8
+//TODO: change max packet length to 1024
+
